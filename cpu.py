@@ -30,6 +30,7 @@ class CPU:
         self.pc = 0 #Program Counter
         self.reg = [0] * 8 #8 general purpose registers
         self.ram = [0] * 256 #Hold 256 bytes of memory
+        self.flags = 0b001 #set to equal true
          
 
     def load(self, progname):
@@ -153,8 +154,20 @@ class CPU:
                 self.alu(opcode, operand_a, operand_b)
                 self.pc +=3
             elif opcode == JMP:
+                #Jumps to the register
                 self.pc = self.reg[operand_a]
-            elif opcode ==                 
+            elif opcode == JEQ:
+                #if equal flag is true, jump to the address stored in the given register
+                if self.flags & etf:
+                    self.pc = self.reg[operand_a]
+                else:
+                    self.pc += 2
+            elif opcode == JNE:
+                #if equal flag is false, jump to the address stored in the given register
+                if not self.flags & etf:
+                    self.pc = self.reg[operand_a]
+                else:
+                    self.pc += 2
             elif opcode == HLT:
                 #BEEj, only exits if there is an error?
                 sys.exit(1)
